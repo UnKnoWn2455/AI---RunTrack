@@ -47,4 +47,7 @@ class AppRepository @Inject constructor(
     fun getTotalAvgSpeed(fromDate: Date? = null, toDate: Date? = null): Flow<Float> =
         runDao.getTotalAvgSpeed(fromDate, toDate)
 
+    fun getAveragePredictedPace(fromDate: Date? = null, toDate: Date? = null): Flow<Float> =
+        runDao.getAveragePredictedPace(fromDate, toDate)
+
 }

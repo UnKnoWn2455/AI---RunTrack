@@ -13,8 +13,7 @@ import com.sdevprem.runtrack.domain.usecase.GetCurrentRunStateWithCaloriesUseCas
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import java.math.RoundingMode
 import java.util.Date
@@ -30,18 +29,27 @@ class CurrentRunViewModel @Inject constructor(
     private val ioDispatcher: CoroutineDispatcher,
     getCurrentRunStateWithCaloriesUseCase: GetCurrentRunStateWithCaloriesUseCase
 ) : ViewModel() {
+    val currentRunState = trackingManager.currentRunState
+    val trackingDurationInMs = trackingManager.trackingDurationInMs
+    val predictedPace = trackingManager.predictedPace
+
     val currentRunStateWithCalories = getCurrentRunStateWithCaloriesUseCase()
         .stateIn(
             viewModelScope,
             SharingStarted.Lazily,
             CurrentRunStateWithCalories()
         )
-    val runningDurationInMillis = trackingManager.trackingDurationInMs
 
-    fun playPauseTracking() {
-        if (currentRunStateWithCalories.value.currentRunState.isTracking)
-            trackingManager.pauseTracking()
-        else trackingManager.startResumeTracking()
+    fun startResumeTracking() {
+        trackingManager.startResumeTracking()
+    }
+
+    fun pauseTracking() {
+        trackingManager.pauseTracking()
+    }
+
+    fun stopTracking() {
+        trackingManager.stop()
     }
 
     fun finishRun(bitmap: Bitmap) {
@@ -52,10 +60,10 @@ class CurrentRunViewModel @Inject constructor(
                 avgSpeedInKMH = currentRunStateWithCalories.value.currentRunState.distanceInMeters
                     .toBigDecimal()
                     .multiply(3600.toBigDecimal())
-                    .divide(runningDurationInMillis.value.toBigDecimal(), 2, RoundingMode.HALF_UP)
+                    .divide(trackingDurationInMs.value.toBigDecimal(), 2, RoundingMode.HALF_UP)
                     .toFloat(),
                 distanceInMeters = currentRunStateWithCalories.value.currentRunState.distanceInMeters,
-                durationInMillis = runningDurationInMillis.value,
+                durationInMillis = trackingDurationInMs.value,
                 timestamp = Date(),
                 caloriesBurned = currentRunStateWithCalories.value.caloriesBurnt
             )
@@ -66,5 +74,4 @@ class CurrentRunViewModel @Inject constructor(
     private fun saveRun(run: Run) = appCoroutineScope.launch(ioDispatcher) {
         repository.insertRun(run)
     }
-
 }

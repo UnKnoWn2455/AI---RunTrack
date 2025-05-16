@@ -9,5 +9,6 @@ data class HomeScreenState(
     val currentRunStateWithCalories: CurrentRunStateWithCalories = CurrentRunStateWithCalories(),
     val currentRunInfo: Run? = null,
     val user: User = User(),
-    val distanceCoveredInKmInThisWeek: Float = 0.0f
+    val distanceCoveredInKmInThisWeek: Float = 0.0f,
+    val averagePace: Float = 0.0f
 )

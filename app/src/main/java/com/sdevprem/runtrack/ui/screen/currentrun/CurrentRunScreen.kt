@@ -3,6 +3,7 @@ package com.sdevprem.runtrack.ui.screen.currentrun
 import android.app.Activity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -33,6 +34,7 @@ import com.sdevprem.runtrack.data.tracking.location.LocationUtils
 import com.sdevprem.runtrack.ui.common.compose.animation.ComposeUtils
 import com.sdevprem.runtrack.ui.screen.currentrun.component.CurrentRunStatsCard
 import com.sdevprem.runtrack.ui.screen.currentrun.component.Map
+import com.sdevprem.runtrack.ui.screen.currentrun.component.PredictedPaceCard
 import com.sdevprem.runtrack.ui.theme.AppTheme
 import kotlinx.coroutines.delay
 
@@ -59,42 +61,48 @@ fun CurrentRunScreen(
     var isRunningFinished by rememberSaveable { mutableStateOf(false) }
     var shouldShowRunningCard by rememberSaveable { mutableStateOf(false) }
     val runState by viewModel.currentRunStateWithCalories.collectAsStateWithLifecycle()
-    val runningDurationInMillis by viewModel.runningDurationInMillis.collectAsStateWithLifecycle()
+    val runningDurationInMillis by viewModel.trackingDurationInMs.collectAsStateWithLifecycle()
 
     LaunchedEffect(key1 = Unit) {
         delay(ComposeUtils.slideDownInDuration + 200L)
         shouldShowRunningCard = true
     }
 
-    Box(modifier = Modifier.fillMaxSize()) {
-        Map(
-            pathPoints = runState.currentRunState.pathPoints,
-            isRunningFinished = isRunningFinished,
-        ) {
-            viewModel.finishRun(it)
-            navController.navigateUp()
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp)
+    ) {
+        Box(modifier = Modifier.weight(1f)) {
+            Map(
+                pathPoints = runState.currentRunState.pathPoints,
+                isRunningFinished = isRunningFinished,
+            ) {
+                viewModel.finishRun(it)
+                navController.navigateUp()
+            }
+            TopBar(
+                modifier = Modifier
+                    .padding(24.dp),
+                onNavigateUp = navController::navigateUp
+            )
         }
-        TopBar(
-            modifier = Modifier
-                .align(Alignment.TopStart)
-                .padding(24.dp),
-            onNavigateUp = navController::navigateUp
-        )
         ComposeUtils.SlideUpAnimatedVisibility(
-            modifier = Modifier
-                .align(Alignment.BottomCenter),
             visible = shouldShowRunningCard
         ) {
             CurrentRunStatsCard(
                 modifier = Modifier
                     .padding(vertical = 16.dp, horizontal = 24.dp),
-                onPlayPauseButtonClick = viewModel::playPauseTracking,
+                onPlayPauseButtonClick = { if (runState.currentRunState.isTracking) viewModel.pauseTracking() else viewModel.startResumeTracking() },
                 runState = runState,
                 durationInMillis = runningDurationInMillis,
                 onFinish = { isRunningFinished = true }
             )
         }
 
+        PredictedPaceCard(
+            modifier = Modifier.padding(top = 16.dp)
+        )
     }
 }
 

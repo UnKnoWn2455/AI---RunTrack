@@ -224,6 +224,22 @@ private fun RunStats(
             unit = "km/hr",
             value = run.avgSpeedInKMH.toString()
         )
+        Box(
+            modifier = Modifier
+                .width(1.dp)
+                .fillMaxHeight()
+                .padding(vertical = 8.dp)
+                .align(Alignment.CenterVertically)
+                .background(
+                    color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f),
+                )
+        )
+        RunningStatsItem(
+            modifier = Modifier,
+            painter = painterResource(id = R.drawable.running_boy),
+            unit = "min/km",
+            value = String.format("%.1f", run.predictedPace)
+        )
     }
 }
 

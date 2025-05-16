@@ -131,6 +131,9 @@ fun HomeScreenContent(
                 durationInMillis = durationInMillis,
                 runState = state.currentRunStateWithCalories,
             )
+        
+        AveragePaceBox(averagePace = state.averagePace)
+        
         Row(
             modifier = Modifier
                 .background(color = MaterialTheme.colorScheme.surface)
@@ -526,4 +529,48 @@ private fun WeeklyGoalCard(
         }
     }
 
+}
+
+@Composable
+private fun AveragePaceBox(
+    modifier: Modifier = Modifier,
+    averagePace: Float
+) {
+    ElevatedCard(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(horizontal = 24.dp)
+            .padding(bottom = 16.dp),
+        elevation = CardDefaults.elevatedCardElevation(defaultElevation = 4.dp)
+    ) {
+        Column(
+            modifier = Modifier
+                .padding(16.dp)
+                .fillMaxWidth(),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text(
+                text = "Average Pace",
+                style = MaterialTheme.typography.titleMedium,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
+            )
+            
+            Spacer(modifier = Modifier.height(8.dp))
+            
+            Text(
+                text = if (averagePace > 0) String.format("%.1f min/km", averagePace) else "---",
+                style = MaterialTheme.typography.headlineMedium,
+                fontWeight = FontWeight.Bold,
+                color = MaterialTheme.colorScheme.primary
+            )
+            
+            Spacer(modifier = Modifier.height(4.dp))
+            
+            Text(
+                text = "Last 3 Activities",
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
+            )
+        }
+    }
 }

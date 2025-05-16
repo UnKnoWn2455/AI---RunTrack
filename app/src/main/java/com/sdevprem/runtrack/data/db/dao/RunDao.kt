@@ -79,4 +79,12 @@ interface RunDao {
     )
     fun getTotalAvgSpeed(fromDate: Date?, toDate: Date?): Flow<Float>
 
+    @Query(
+        "SELECT AVG(predictedPace) FROM running_table WHERE " +
+                "(:fromDate IS NULL OR timestamp >= :fromDate) AND " +
+                "(:toDate IS NULL OR timestamp <= :toDate) " +
+                "ORDER BY timestamp DESC"
+    )
+    fun getAveragePredictedPace(fromDate: Date?, toDate: Date?): Flow<Float>
+
 }

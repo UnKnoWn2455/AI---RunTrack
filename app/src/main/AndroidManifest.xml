@@ -27,13 +27,7 @@
             android:theme="@style/Theme.RunTrack">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-            <intent-filter>
-                <data
-                    android:host="runtrack.sdevprem.com"
-                    android:scheme="https" />
             </intent-filter>
         </activity>
 
@@ -46,7 +40,8 @@
 
         <service
             android:name=".background.tracking.service.TrackingService"
-            android:foregroundServiceType="location" />
+            android:foregroundServiceType="location"
+            android:exported="false" />
     </application>
 
 </manifest>

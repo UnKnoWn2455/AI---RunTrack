@@ -172,6 +172,14 @@ private fun RunInfo(
                     fontWeight = FontWeight.Normal
                 ),
             )
+            Spacer(modifier = Modifier.size(8.dp))
+            Text(
+                text = String.format("%.1f min/km", run.predictedPace),
+                style = MaterialTheme.typography.labelSmall.copy(
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    fontWeight = FontWeight.Normal
+                ),
+            )
         }
     }
 }

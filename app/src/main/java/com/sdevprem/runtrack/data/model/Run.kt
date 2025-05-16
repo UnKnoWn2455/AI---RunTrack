@@ -13,6 +13,7 @@ data class Run(
     var distanceInMeters: Int = 0,
     var durationInMillis: Long = 0L,
     var caloriesBurned: Int = 0,
+    var predictedPace: Float = 0f,
 
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0

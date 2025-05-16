@@ -3,14 +3,16 @@ package com.sdevprem.runtrack.common.extension
 import java.util.Calendar
 
 fun Calendar.setDateToWeekFirstDay() = apply {
-    val firstDay = getActualMinimum(Calendar.DAY_OF_WEEK)
-    set(Calendar.DAY_OF_WEEK, firstDay)
+    while (get(Calendar.DAY_OF_WEEK) != Calendar.SUNDAY) {
+        add(Calendar.DAY_OF_MONTH, -1)
+    }
     setMinimumTime()
 }
 
 fun Calendar.setDateToWeekLastDay() = apply {
-    val lastDay = getActualMaximum(Calendar.DAY_OF_WEEK)
-    set(Calendar.DAY_OF_WEEK, lastDay)
+    while (get(Calendar.DAY_OF_WEEK) != Calendar.SATURDAY) {
+        add(Calendar.DAY_OF_MONTH, 1)
+    }
     setMaximumTime()
 }
 

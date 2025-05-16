@@ -59,11 +59,15 @@ class HomeViewModel @Inject constructor(
         distanceCoveredInThisWeekInMeter,
         _homeScreenState,
     ) { runList, runState, user, distanceInMeter, state ->
+        // Set fixed average pace to 5.3 min/km
+        val averagePace = 5.3f
+
         state.copy(
             runList = runList,
             currentRunStateWithCalories = runState,
             user = user,
-            distanceCoveredInKmInThisWeek = distanceInMeter / 1000f
+            distanceCoveredInKmInThisWeek = distanceInMeter / 1000f,
+            averagePace = averagePace
         )
     }.stateIn(
         viewModelScope,
