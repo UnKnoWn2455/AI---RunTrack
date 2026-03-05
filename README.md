@@ -4,6 +4,9 @@ RunTrack is a Fitness Tracking app utilizing modern Android technologies, includ
 Jetpack Compose, MVVM architecture, and Google Maps API. The app allows users to
 track their running activities, displaying real-time routes on an interactive map
 while storing essential statistics using Room database.
+Additionally, the project integrates a Temporal Convolutional Network (TCN)
+model to analyze sequential running data and provide intelligent insights
+such as activity pattern recognition and performance prediction.
 
 ## Features
 1. Live tracking of running activity using GPS.
@@ -18,6 +21,7 @@ while storing essential statistics using Room database.
 7. Paging3 integration.
 8. Dynamic color support in dark and light theme.
 9. Weekly Statistics with filters in graph.
+10. AI powered analysis of running patterns using Temporal Convolutional Networks.
 
 ## Screenshot
 
@@ -61,6 +65,12 @@ To store and manage running statistics.
 [Google Maps API](https://developers.google.com/maps/documentation/android-sdk) :
 To track user's running activity such as speed, distance and path on the map.
 
+[Python]
+Used for training and running the Temporal Convolutional Network model.
+
+[TensorFlow / PyTorch]
+Machine learning framework used to implement the TCN model.
+
 [Hilt](https://developer.android.com/training/dependency-injection/hilt-android) :
 For injecting dependencies.
 
@@ -79,6 +89,50 @@ This app follows MVVM architecture, Uni Directional Flow (UDF) pattern and Singl
 pattern.
 HLD of tracking architecture is shown in the below image:
 ![tracking_architecture](https://github.com/sDevPrem/run-track/assets/130966261/932e9df7-cf34-4902-aa84-73a6431ca236)
+
+
+## AI Module – Temporal Convolutional Network (TCN)
+
+An AI component was integrated into the application to analyze sequential
+running data collected during workouts.
+
+The Temporal Convolutional Network (TCN) processes time-series data such as:
+- running speed
+- distance over time
+- pace variations
+- activity duration
+
+This allows the system to identify running patterns and generate insights
+regarding user performance.
+
+### Model Workflow
+1. Running activity data collected through GPS tracking.
+2. Data preprocessing and normalization.
+3. Sequential data fed into the TCN model.
+4. Model outputs predictions or pattern insights.
+
+## AI Architecture
+
+The AI module uses a Temporal Convolutional Network (TCN) for
+processing time-series running data.
+
+TCN was chosen over traditional RNN/LSTM models because:
+
+- parallel computation capability
+- stable gradients
+- better performance for long sequence modeling
+
+The model processes sequential running statistics and outputs
+insights regarding user performance trends.
+
+## My Contributions
+
+This project extends an existing open-source implementation by adding
+new features and architectural improvements including:
+
+- Integration of a Temporal Convolutional Network (TCN) for activity analysis
+- Enhancement of data processing workflow for sequential running data
+- Improvements to the Android UI and feature integrations
 
 ## Installation
 
